@@ -24,6 +24,18 @@ class HelloComputer(
 
     @GetMapping("/user")
     fun getUser(userId: String?): String {
+        val num = userId?.toIntOrNull()
+        if (userId != null) {
+            if (num == null && userId.isNotEmpty()) {
+                return when (userService.validateUserId(userId)) {
+                    true -> ""
+                    false -> "Must be a number! <a href=\"/\">Back</a>"
+                }
+            }
+        }
+        if (userId != null) {
+            if (userId.isEmpty()) return "You did not type anything! <a href=\"/\">Back</a>"
+        }
         return when (userService.validateUserId(userId)) {
             true -> "Hello number $userId! <a href=\"/\">Back</a>"
             false -> "You did not type anything! <a href=\"/\">Back</a>"
